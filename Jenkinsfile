@@ -43,7 +43,7 @@ pipeline {
                 }
                 script {
                     def endDate = new Date()
-                    def tookTime = groovy.time.TimeCategory.minus(endDate,startDate).toString()
+                    def tookTime = groovy.time.TimeCategory.minus(endDate,${startDate}).toString()
                 }
                 slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network list activated! Time: ${tookTime}", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
             }
