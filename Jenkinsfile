@@ -7,7 +7,7 @@ pipeline {
         PROJ = "/bin:/usr/local/bin:/usr/bin"
     }
     parameters {
-        choice(name: 'NETWORK', choices: ['staging', 'production'], defaultValue: 'staging', description: 'The network to activate the network list.')
+        choice(name: 'NETWORK', choices: ['staging', 'production'], description: 'The network to activate the network list.')
     }
     stages {
      stage('Clone NL project') {
