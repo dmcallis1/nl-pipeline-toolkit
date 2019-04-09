@@ -24,7 +24,8 @@ pipeline {
         // Comma-seperated e-mail list
         NLEMAIL = "dmcallis@akamai.com"
 
-        // Todo add path to executables
+        // Path to python project, if NL pipeline script are not in PATH
+        NLPATH = "/var/lib/jenkins/gcs-au-demo"
     }
     parameters {
         choice(name: 'NETWORK', choices: ['staging', 'production'], description: 'The network to activate the network list.')
@@ -49,7 +50,7 @@ pipeline {
                         selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
                 ])
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py $NLNAME --file $NLFILE --action ${ACTION}'
+                    sh 'python3 $NLPATH/updateNetworkList.py $NLNAME --file $NLFILE --action ${ACTION}'
                 }
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Updating network list ${env.NLNAME}", color: '#1E90FF')
             }
@@ -58,7 +59,7 @@ pipeline {
             steps {
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF')
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py $NLNAME --network ${NETWORK} --email $NLEMAIL'
+                    sh 'python3 $NLPATH/activateNetworkList.py $NLNAME --network ${NETWORK} --email $NLEMAIL'
                 }
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Network list activated!", color: '#1E90FF')
             }
