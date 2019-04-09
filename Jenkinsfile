@@ -6,12 +6,12 @@ pipeline {
     stages {
         stage('Update Network List') {
             steps { 
-                sh 'python3 /var/lib/jenkins/gss-au-python/updateNetworkList.py gss-ta-nw-list --file list.csv'
+                sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py gss-ta-nw-list --file list.csv'
             }
         }
         stage('Activate Network List'){
             steps {
-                sh 'python3 /var/lib/jenkins/gss-au-python/activateNetworkList gss-ta-nw-list --network PRODUCTION --email dmcallis@akamai.com'
+                sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList gss-ta-nw-list --network PRODUCTION --email dmcallis@akamai.com'
             }
         }
     }
