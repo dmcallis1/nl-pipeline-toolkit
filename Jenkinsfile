@@ -21,54 +21,55 @@ pipeline {
         // Link to VCS project containing network list
         NLSCM = "git@github.com:dmcallis1/gcs-au-demo.git"
 
+        // Comma-seperated e-mail list
+        NLEMAIL = "dmcallis@akamai.com"
+
         // Todo add path to executables
     }
     parameters {
         choice(name: 'NETWORK', choices: ['staging', 'production'], description: 'The network to activate the network list.')
+        choice(name: 'ACTION', choices: ['append', 'overwrite'], description: 'Append to or overwrite the target list based on the supplied file contents.')
     }
     stages {
      stage('Clone NL project') {
             steps {
-                // git 'git@github.com:dmcallis1/gcs-au-demo.git'
                 git "${env.NLSCM}"
 
-                // archiveArtifacts 'list.csv'
                 archiveArtifacts "${env.NLFILE}"
 
-                // slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Pulling updated network list from SCM", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
-                slackSend(botUser: true, message: "${env.JOB_NAME} - Pulling updated network list from SCM", color: '#1E90FF')
+                slackSend(botUser: true, message: "${env.JOB_NAME} - Pulling updated network list from SCM. List Name: ${end.NLNAME}", color: '#1E90FF')
             }
         }
         stage('Update Network List') {
             steps {
                 step([  $class: 'CopyArtifact',
-                        filter: 'list.csv',
+                        filter: "${env.NLFILE}",
                         fingerprintArtifacts: true,
                         projectName: '${JOB_NAME}',
                         selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
                 ])
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py gss-ta-nw-list --file list.csv --action overwrite'
+                    sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py ${env.NLNAME} --file ${env.NLFILE} --action ${ACTION}'
                 }
-                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Updating network list ${env.NLNAME}", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+                slackSend(botUser: true, message: "${env.JOB_NAME} - Updating network list ${env.NLNAME}", color: '#1E90FF')
             }
         }
         stage('Activate Network List'){
             steps {
-                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+                slackSend(botUser: true, message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF')
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py gss-ta-nw-list --network ${NETWORK} --email dmcallis@akamai.com'
+                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py ${env.NLNAME} --network ${NETWORK} --email ${env.NLEMAIL}'
                 }
-                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network list activated!", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+                slackSend(botUser: true, message: "${env.JOB_NAME} - Network list activated!", color: '#1E90FF')
             }
         }
     }
     post {
         success {
-            slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network List updated successfully.", color: '#008000', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+            slackSend(botUser: true, message: "${env.JOB_NAME} - Network List updated successfully.", color: '#008000')
         }
         failure {
-            slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network List update failed!", color: '#FF0000', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+            slackSend(botUser: true, message: "${env.JOB_NAME} - Network List update failed!", color: '#FF0000')
         }
     }
 }
