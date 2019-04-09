@@ -49,7 +49,7 @@ pipeline {
                         selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
                 ])
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py ${env.NLNAME} --file ${env.NLFILE} --action ${ACTION}'
+                    sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py $NLNAME --file $NLFILE --action ${ACTION}'
                 }
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Updating network list ${env.NLNAME}", color: '#1E90FF')
             }
@@ -58,7 +58,7 @@ pipeline {
             steps {
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF')
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py ${env.NLNAME} --network ${NETWORK} --email ${env.NLEMAIL}'
+                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py $NLNAME --network ${NETWORK} --email ${env.NLEMAIL}'
                 }
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Network list activated!", color: '#1E90FF')
             }
