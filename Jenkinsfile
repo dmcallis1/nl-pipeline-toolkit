@@ -14,7 +14,7 @@ pipeline {
         stage('Update Network List') {
             steps {
                 slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: 'Updating network list', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
-                copyArtifacts filter: 'list.csv', fingerprintArtifacts: true, projectName: 'Clone project', selector: lastSuccessful(), target: '.'
+                copyArtifacts filter: 'list.csv', fingerprintArtifacts: true, projectName: 'Clone NL project', selector: lastSuccessful(), target: '.'
                 sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py gss-ta-nw-list --file list.csv'
             }
         }
