@@ -34,11 +34,15 @@ pipeline {
         }
         stage('Activate Network List'){
             steps {
+                def startDate = new Date().parse('dd/MM/yyyy HH:mm:ss',f.text)
+
                 slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
                 withEnv(["PATH+EXTRA=$PROJ"]) {
                     sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py gss-ta-nw-list --network ${NETWORK} --email dmcallis@akamai.com'
                 }
-                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network list activated!", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+                def endDate = new Date()
+                def tookTime = groovy.time.TimeCategory.minus(endDate,startDate).toString()
+                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network list activated! Time: ${tookTime}", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
             }
         }
     }
