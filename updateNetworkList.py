@@ -38,6 +38,7 @@ args = parser.parse_args()
 
 log.info('Updating network list \'' + args.name + '\'. Action: ' + args.action)
 
+# Edgegrid auth
 try:
     edgerc = EdgeRc(args.config)
     baseurl = 'https://%s' % edgerc.get(args.section, 'host')
