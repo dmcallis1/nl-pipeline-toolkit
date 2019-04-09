@@ -31,7 +31,7 @@ pipeline {
         stage('Activate Network List'){
             steps {
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList gss-ta-nw-list --network PRODUCTION --email dmcallis@akamai.com'
+                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py gss-ta-nw-list --network PRODUCTION --email dmcallis@akamai.com'
                 }
                 slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: 'Activating network list', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
             }
