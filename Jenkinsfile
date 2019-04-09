@@ -41,6 +41,11 @@ pipeline {
         }
     }
     post {
-        slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', color: 'blue', botUser: true, channel: 'gcs-chatops', message: 'Network List updated successfully.', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+        success {
+            slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', color: 'green', botUser: true, channel: 'gcs-chatops', message: 'Network List updated successfully.', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+        }
+        failure {
+            slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', color: 'red', botUser: true, channel: 'gcs-chatops', message: 'Network List updated successfully.', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+        }
     }
 }
