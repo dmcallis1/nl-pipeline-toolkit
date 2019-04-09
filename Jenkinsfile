@@ -58,7 +58,7 @@ pipeline {
             steps {
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF')
                 withEnv(["PATH+EXTRA=$PROJ"]) {
-                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py $NLNAME --network ${NETWORK} --email ${env.NLEMAIL}'
+                    sh 'python3 /var/lib/jenkins/gcs-au-demo/activateNetworkList.py $NLNAME --network ${NETWORK} --email $NLEMAIL'
                 }
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Network list activated!", color: '#1E90FF')
             }
