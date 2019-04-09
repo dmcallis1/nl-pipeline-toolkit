@@ -37,7 +37,7 @@ pipeline {
 
                 archiveArtifacts "${env.NLFILE}"
 
-                slackSend(botUser: true, message: "${env.JOB_NAME} - Pulling updated network list from SCM. List Name: ${end.NLNAME}", color: '#1E90FF')
+                slackSend(botUser: true, message: "${env.JOB_NAME} - Pulling updated network list from SCM. List Name: ${env.NLNAME}", color: '#1E90FF')
             }
         }
         stage('Update Network List') {
