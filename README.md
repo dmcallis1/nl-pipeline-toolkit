@@ -1,7 +1,30 @@
 
 # Akamai Network List Pipeline Toolkit
 
-This project is used for Akamai Network List management automation.
+This project is used for Akamai Network List management automation, using the [Akamai Network List API V2](https://developer.akamai.com/api/cloud_security/network_lists/v2.html)
+
+
+The scripts and Jenkinsfile contained in this project perform the following functions within a simple CI process:
+
+1. Update existing Network List from source CSV file
+2. Activate the Network List on either production or staging networks
+
+
+
+## Installation
+
+All package dependencies are maintained in the requirements.txt file. Use pip to install:
+
+```
+pip install -r requirements.txt
+```
+
+## Runtime Environment
+
+Each script was developed and tested using a python 3 (3.6.2) interpeter.
+
+It should also be noted that the scripts assume the runtime environment will be a Linux/Unix OS. Some scripts expect Linux specific directory structures.
+
 
 ## Python Artifacts
 
