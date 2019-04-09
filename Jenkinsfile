@@ -4,7 +4,7 @@ pipeline {
         skipStagesAfterUnstable()
     }
     environment {
-        PROJ = "/bin:/usr/local/bin"
+        PROJ = "/bin:/usr/local/bin:/usr/bin"
     }
     stages {
      stage('Clone NL project') {
