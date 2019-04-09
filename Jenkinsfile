@@ -43,7 +43,7 @@ pipeline {
         stage('Update Network List') {
             steps {
                 step([  $class: 'CopyArtifact',
-                        filter: '${NLFILE}',
+                        filter: '${env.NLFILE}',
                         fingerprintArtifacts: true,
                         projectName: '${JOB_NAME}',
                         selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
