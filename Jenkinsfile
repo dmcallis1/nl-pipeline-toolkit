@@ -35,7 +35,7 @@ pipeline {
         stage('Activate Network List'){
             steps {
                 script {
-                    def startDate = new Date().parse('dd/MM/yyyy HH:mm:ss',f.text)
+                    def startDate = new Date()
                 }
                 slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Activating network list on ${env.NETWORK}", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
                 withEnv(["PATH+EXTRA=$PROJ"]) {
@@ -54,7 +54,7 @@ pipeline {
             slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network List updated successfully.", color: '#008000', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
         }
         failure {
-            slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network List updated successfully.", color: '#FF0000', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+            slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Network List update failed!", color: '#FF0000', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
         }
     }
 }
