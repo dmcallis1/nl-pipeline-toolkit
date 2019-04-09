@@ -6,19 +6,16 @@ pipeline {
     environment {
         PROJ = "/bin:/usr/local/bin:/usr/bin"
     }
+    parameters {
+        choice(name: 'NETWORK', choices: ['staging', 'production'], defaultValue: 'staging', description: 'The network to activate the network list.')
+    }
     stages {
      stage('Clone NL project') {
-        input {
-            message "Activation network"
-            parameters {
-                choice(name: 'NETWORK', choices: ['staging', 'production'], defaultValue: 'staging', description: 'The network to activate the network list.')
+            steps {
+                git 'git@github.com:dmcallis1/gcs-au-demo.git'
+                archiveArtifacts 'list.csv'
+                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', color: 'blue', botUser: true, channel: 'gcs-chatops', message: 'Pulling updated network list from SCM', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
             }
-        }
-                steps {
-                    git 'git@github.com:dmcallis1/gcs-au-demo.git'
-                    archiveArtifacts 'list.csv'
-                    slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', color: 'blue', botUser: true, channel: 'gcs-chatops', message: 'Pulling updated network list from SCM', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
-                }
         }
         stage('Update Network List') {
             steps {
