@@ -15,7 +15,7 @@ pipeline {
             steps {
                 git 'git@github.com:dmcallis1/gcs-au-demo.git'
                 archiveArtifacts 'list.csv'
-                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: '${env.JOB_NAME} - Pulling updated network list from SCM', color: 'blue', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
+                slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: '${env.JOB_NAME} - Pulling updated network list from SCM', color: '#00FF00', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
             }
         }
         stage('Update Network List') {
