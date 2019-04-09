@@ -30,10 +30,10 @@ pipeline {
      stage('Clone NL project') {
             steps {
                 // git 'git@github.com:dmcallis1/gcs-au-demo.git'
-                git ${env.NLSCM}
+                git "${env.NLSCM}"
 
                 // archiveArtifacts 'list.csv'
-                archiveArtifacts ${NLFILE}
+                archiveArtifacts "${env.NLFILE}"
 
                 // slackSend baseUrl: 'https://akamaiwebteam.slack.com/services/hooks/jenkins-ci/', botUser: true, channel: 'gcs-chatops', message: "${env.JOB_NAME} - Pulling updated network list from SCM", color: '#1E90FF', teamDomain: 'akamaiwebteam', token: 'A9dlq96QplhZuTnuNhXIDmx6'
                 slackSend(botUser: true, message: "${env.JOB_NAME} - Pulling updated network list from SCM", color: '#1E90FF')
