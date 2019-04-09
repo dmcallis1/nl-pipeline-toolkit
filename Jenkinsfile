@@ -4,8 +4,15 @@ pipeline {
         skipStagesAfterUnstable()
     }
     stages {
+     stage('Clone project') {
+            steps {
+                git 'git@github.com:dmcallis1/gcs-au-demo.git'
+                archiveArtifacts 'list.csv'
+            }
+        }
         stage('Update Network List') {
-            steps { 
+            steps {
+                copyArtifacts filter: 'list.csv', fingerprintArtifacts: true, projectName: 'Update Network List', selector: lastSuccessful(), target: '.'
                 sh 'python3 /var/lib/jenkins/gcs-au-demo/updateNetworkList.py gss-ta-nw-list --file list.csv'
             }
         }
