@@ -19,7 +19,7 @@ pipeline {
         NLNAME = "gss-ta-nw-list"
 
         // Link to VCS project containing network list
-        NLSCM = "git@github.com:dmcallis1/gcs-au-demo.git"
+        NLSCM = "git@github.com:dmcallis1/nl-pipeline-toolkit.git"
 
         // Comma-seperated e-mail list
         NLEMAIL = "dmcallis@akamai.com"
