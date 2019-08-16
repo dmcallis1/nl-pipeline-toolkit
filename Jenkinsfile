@@ -13,7 +13,7 @@ pipeline {
         PROJ = "/bin:/usr/local/bin:/usr/bin"
 
         // Name of CSV file containing network list
-        NLFILE = "list.csv"
+        NLFILE = "list.json"
 
         // Name of network list to update
         NLNAME = "gss-ta-nw-list"
@@ -44,7 +44,7 @@ pipeline {
         stage('Update Network List') {
             steps {
                 step([  $class: 'CopyArtifact',
-                        filter: '*.csv',
+                        filter: '*.json',
                         fingerprintArtifacts: true,
                         projectName: '${JOB_NAME}',
                         selector: [$class: 'SpecificBuildSelector', buildNumber: '${BUILD_NUMBER}']
