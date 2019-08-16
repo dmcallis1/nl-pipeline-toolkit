@@ -12,6 +12,7 @@ import os
 import sys
 import re
 import requests
+import json
 from akamai.edgegrid import EdgeGridAuth, EdgeRc
 
 # Setup logging
@@ -76,9 +77,10 @@ if not os.path.isfile(args.file):
 try:
     with open(args.file, 'r') as csvfile:
         # Read in file contents as a list
-        ips = csvfile.read().split(args.delimiter)
+        ips = json.load(csvfile)
+
 except Exception as e:
-    log.error('Error encountered opening CSV file: ' + args.file)
+    log.error('Error encountered opening JSON file: ' + args.file)
     log.error(e)
 
 log.info('Reading input file: ' + args.file + '. Size (bytes): ' + str(os.stat(args.file).st_size))
@@ -87,7 +89,7 @@ log.info('Reading input file: ' + args.file + '. Size (bytes): ' + str(os.stat(a
 sanitizedIps = []
 
 # Let's check the contents of the file
-for ip in ips:
+for ip in ips['ips']:
     # Use regex to test that all lines are IPs
     if not re.match(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.(\d{1,3}|\d{1}\/\d{1,2})\b', ip):
         # The item was not an IP, discard it.
