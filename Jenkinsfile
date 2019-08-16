@@ -25,7 +25,7 @@ pipeline {
         NLEMAIL = "dmcallis@akamai.com"
 
         // Path to python project, if NL pipeline script are not in PATH
-        NLPATH = "/var/lib/jenkins/gcs-au-demo"
+        NLPATH = "/var/lib/jenkins/nl-pipeline-toolkit"
     }
     parameters {
         choice(name: 'NETWORK', choices: ['staging', 'production'], description: 'The network to activate the network list.')
