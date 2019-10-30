@@ -43,7 +43,7 @@ log.info('Updating network list \'' + args.name + '\'. Action: ' + args.action)
 try:
     edgerc = EdgeRc(args.config)
     baseurl = 'https://%s' % edgerc.get(args.section, 'host')
-    session = requests.Session()
+    tes
     session.auth = EdgeGridAuth.from_edgerc(edgerc, args.section)
     log.debug('API Base URL: ' + baseurl)
 
